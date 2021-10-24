@@ -56,7 +56,13 @@ def scaled_photo():
     print("Elapsed time during the whole program in seconds: ", time_stop-time_start)
     pass
 
-
+def negative_function():
+    read="logo_put.png"
+    image=cv2.imread(read,0)
+    cv2.namedWindow('Negative')
+    ret, mask = cv2.threshold(image, 10, 255, cv2.THRESH_BINARY)
+    image_neg=cv2.bitwise_not(mask)
+    cv2.imshow('Negative',image_neg)
 while True:
 
     # sleep for 10 ms waiting for user to press some key, return -1 on timeout
@@ -88,6 +94,7 @@ while True:
 
     scaled_photo()
     on_trackbar(0)
+    negative_function()
     key_code = cv2.waitKey(0)
     if key_code == ord('k'):
         # escape key pressed
