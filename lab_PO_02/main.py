@@ -63,6 +63,7 @@ def negative_function():
     ret, mask = cv2.threshold(image, 10, 255, cv2.THRESH_BINARY)
     image_neg=cv2.bitwise_not(mask)
     cv2.imshow('Negative',image_neg)
+
 while True:
 
     # sleep for 10 ms waiting for user to press some key, return -1 on timeout
