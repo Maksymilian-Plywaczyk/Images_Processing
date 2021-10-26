@@ -5,7 +5,7 @@ def empty_callback(value):
     print(f'Trackbar reporting for duty with value: {value}')
     pass
 
-
+#checking its work from different PC
 nameWindow = 'Filtering'
 nameWindow2 = 'Filtering salt and pepper'
 path = "lenna_noise.bmp"
