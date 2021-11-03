@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from time import perf_counter
 
 
 def empty_callback(value):
@@ -86,9 +87,25 @@ def OperationMorphologic():
             # escape key pressed
             break
 
+def ScalingImage():
+    path = "krysiak.jpg"
+    img = cv2.imread(path,0)
+    cv2.namedWindow('ScalingImage')
+    height, width = img.shape
+    time_start = perf_counter()
+    for h in range(height):
+        for w in range(width):
+            if h%3 and w%3==0:
+                img[h,w]=255
+    time_stop = perf_counter()
+    print("Elapsed time: ", time_start, time_stop)
+    print("Elapsed time during the whole program in seconds: ", time_stop - time_start)
+    cv2.imshow('ScalingImage',img)
+    key_code = cv2.waitKey(0)
 if __name__ == "__main__": #makeshift main
-    Filtering()
-    OperationMorphologic()
+    #Filtering()
+    #OperationMorphologic()
+    ScalingImage()
 
 
 cv2.destroyAllWindows()
