@@ -30,6 +30,7 @@ img = np.zeros((512,512,3), np.uint8)
 cv.namedWindow('image')
 cv.setMouseCallback('image',draw_circle)
 
+
 while True:
     cv.imshow('image',img)
     k = cv.waitKey(1) & 0xFF
