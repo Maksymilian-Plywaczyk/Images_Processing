@@ -77,50 +77,75 @@ def OperationMorphologic():
 
     while True:
         erosioning = cv2.getTrackbarPos('Erosioning', nameWindow2)
-        ret, thresh=cv2.threshold(img,55,255,cv2.THRESH_BINARY)
-        cv2.imshow(nameWindow,thresh)
+        ret, thresh = cv2.threshold(img, 55, 255, cv2.THRESH_BINARY)
+        cv2.imshow(nameWindow, thresh)
         kernel = np.ones((erosioning, erosioning), np.uint8)
-        erosion=cv2.erode(thresh,kernel,iterations=1)
-        cv2.imshow(nameWindow2,erosion)
+        erosion = cv2.erode(thresh, kernel, iterations=1)
+        cv2.imshow(nameWindow2, erosion)
         key_code = cv2.waitKey(1)
         if key_code == 27:
             # escape key pressed
             break
 
+
+def SmoothingImage():
+    path = "krysiak.jpg"
+    img=cv2.imread(path, 0)
+    cv2.namedWindow('SmoothingImage')
+    dim=(3,3)
+    img_resize=cv2.resize(img,dim, interpolation=cv2.INTER_AREA)
+    height = img_resize.shape[0]
+    width = img_resize.shape[1]
+    for height in range(1, height-1):
+        for width in range(1, width-1):
+            new_values_pixels = img_resize[height, width] * 0.4 + img_resize[height, width + 1] * -0.1 + img_resize[height, width - 1] * 0.1\
+                                + img_resize[height + 1, width] * 0.1 + img_resize[height + 1, width + 1] * -0.05 + img_resize[
+                                    height + 1, width - 1] * 0.05 \
+                                + img_resize[height - 1, width] * 0.1 + img_resize[height - 1, width + 1] * -0.05 + img_resize[
+                                    height - 1, width - 1] * 0.05
+            new_values_pixels_sum = (img_resize[height, width] + img_resize[height, width + 1] + img_resize[height, width - 1] \
+                                     + img_resize[height + 1, width] + img_resize[height + 1, width + 1] + img_resize[height + 1, width - 1] \
+                                     + img_resize[height - 1, width] + img_resize[height - 1, width + 1] + img_resize[
+                                         height - 1, width - 1]) / 9
+            img_resize[height, width] = new_values_pixels_sum
+
+    cv2.imshow('SmoothingImage', img_resize)
+    cv2.waitKey(0)
+
+
 def ScalingImage():
     path = "krysiak.jpg"
-    img = cv2.imread(path,0)
+    img = cv2.imread(path, 0)
     cv2.namedWindow('ScalingImage')
     cv2.namedWindow('BlurScaling')
     height, width = img.shape
     time_start = perf_counter()
-    for h in range(height):
-        for w in range(width):
-            if h%3 and w%3==0:
-                img[h,w]=255
+    for h in range(0, height):
+        for w in range(0, width):
+            if h % 3 and w % 3 == 0:
+                img[h, w] = 255
     time_stop = perf_counter()
     print("Elapsed time: ", time_start, time_stop)
-    period_pixel=time_stop - time_start
+    period_pixel = time_stop - time_start
 
-    time_startBlur=perf_counter()
-    blur=cv2.blur(img,(3,3))
-    time_stopBlur=perf_counter()
-    print("Elapsed time of blur: ",time_startBlur,time_stopBlur)
-    period_blur=time_startBlur-time_stopBlur
+    time_startBlur = perf_counter()
+    blur = cv2.blur(img, (3, 3))
+    time_stopBlur = perf_counter()
+    print("Elapsed time of blur: ", time_startBlur, time_stopBlur)
+    period_blur = time_startBlur - time_stopBlur
     if period_pixel <= period_blur:
         print('Period of pixel is faster than blur')
     else:
         print('Period of blur function is faster than pixel')
 
-    cv2.imshow('BlurScaling',blur)
-    cv2.imshow('ScalingImage',img)
+    cv2.imshow('BlurScaling', blur)
+    cv2.imshow('ScalingImage', img)
     cv2.waitKey(0)
 
 
-if __name__ == "__main__": #makeshift main
-    Filtering()
-    OperationMorphologic()
-    ScalingImage()
-
-
+if __name__ == "__main__":  # makeshift main
+    # Filtering()
+    # OperationMorphologic()
+    # ScalingImage()
+    SmoothingImage()
 cv2.destroyAllWindows()
