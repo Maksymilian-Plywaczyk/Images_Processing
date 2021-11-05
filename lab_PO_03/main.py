@@ -96,6 +96,9 @@ def SmoothingImage():
     img_resize=cv2.resize(img,dim, interpolation=cv2.INTER_AREA)
     height = img_resize.shape[0]
     width = img_resize.shape[1]
+    #Start the stopwatch / counter
+    time_start = perf_counter()
+
     for height in range(1, height-1):
         for width in range(1, width-1):
             new_values_pixels = img_resize[height, width] * 0.4 + img_resize[height, width + 1] * -0.1 + img_resize[height, width - 1] * 0.1\
@@ -108,6 +111,20 @@ def SmoothingImage():
                                      + img_resize[height - 1, width] + img_resize[height - 1, width + 1] + img_resize[
                                          height - 1, width - 1]) / 9
             img_resize[height, width] = new_values_pixels_sum
+
+    #Stop the stopwatch / counter
+    time_stop = perf_counter()
+    print('Elapsed time: ', time_start - time_stop)
+    kernel = np.ones((3, 3), np.uint8)
+    time_start2D=perf_counter()
+    cv2.filter2D(img_resize,ddepth=-1,kernel=kernel)
+    time_stop2D=perf_counter()
+    print('Elapsed time: ',time_start2D-time_stop2D)
+    #Comparing our function with filter2D
+    if time_start-time_stop<time_start2D-time_stop2D:
+        print('Linear function is faster')
+    else:
+        print('Filter2D is faster')
 
     cv2.imshow('SmoothingImage', img_resize)
     cv2.waitKey(0)
@@ -144,8 +161,8 @@ def ScalingImage():
 
 
 if __name__ == "__main__":  # makeshift main
-    # Filtering()
-    # OperationMorphologic()
-    # ScalingImage()
+    Filtering()
+    OperationMorphologic()
+    ScalingImage()
     SmoothingImage()
 cv2.destroyAllWindows()
