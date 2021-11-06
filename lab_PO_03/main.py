@@ -96,6 +96,8 @@ def SmoothingImage():
     img_resize=cv2.resize(img,dim, interpolation=cv2.INTER_AREA)
     height = img_resize.shape[0]
     width = img_resize.shape[1]
+    number_channels=img_resize[2]
+
     #Start the stopwatch / counter
     time_start = perf_counter()
 
