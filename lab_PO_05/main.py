@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 from time import perf_counter
 
+def empty_callback(value):
+    print(f'Trackbar reporting for duty with value: {value}')
+    pass
 
 
 def filter2D():
@@ -28,9 +31,20 @@ def filter2D():
         key_code=cv2.waitKey(1)
         if key_code==27:
             exit()
-
+def Canny():
+    path="baby_yoda.jpg"
+    img= cv2.imread(path,0)
+    cv2.namedWindow('Canny algorithm')
+    cv2.createTrackbar('LowRange','Canny algorithm',0,100,empty_callback)
+    cv2.createTrackbar('MaxRange', 'Canny algorithm', 0, 100, empty_callback)
+    while True:
+        low,high=cv2.getTrackbarPos('LowRange','Canny algorithm'),cv2.getTrackbarPos('MaxRange','Canny algorithm')
+        canny=cv2.Canny(img,low,high)
+        cv2.imshow('Canny algorithm',canny)
+        key_code=cv2.waitKey(1)
+        if key_code==27:
+            exit()
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     filter2D()
-
-
+    Canny()
