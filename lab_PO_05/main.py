@@ -30,7 +30,7 @@ def filter2D():
         cv2.imshow('Module',module.astype(np.uint8))
         key_code=cv2.waitKey(1)
         if key_code==27:
-            exit()
+            break
 def Canny():
     path="baby_yoda.jpg"
     img= cv2.imread(path,0)
