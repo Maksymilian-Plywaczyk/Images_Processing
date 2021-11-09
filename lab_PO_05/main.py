@@ -19,7 +19,7 @@ def filter2D():
     print('Max value of SobelX: ',np.max(sobelx))
     print('Max value of SobelY: ',np.max(sobely))
     np.abs(sobelx).astype(np.uint8)
-    module=np.sqrt(sobelx ** 2 + sobely ** 2)
+    module=np.sqrt(pow(sobelx,2) + pow(sobely,2))
 
     print('Max value of module: ',np.max(module))
     while True:
