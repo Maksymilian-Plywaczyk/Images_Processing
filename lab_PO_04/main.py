@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
 
 rectagle = 0
 circle = 0
@@ -32,9 +34,15 @@ Size=(1920,1080)
 img2 = cv2.resize(img2,Size,interpolation=cv2.INTER_AREA)
 cv2.setMouseCallback('Straightening', MouseCallback)
 
+img3 = cv2.imread('baby_yoda.jpg',0)
+equalization_img = cv2.equalizeHist(img3)
+histogram_img = cv2.calcHist([equalization_img],[0],None,[256],[0,256])
+histogram_img2 = cv2.calcHist([img3],[0],None,[256],[0,256])
+plt.plot(histogram_img2); plt.show()
 while True:
     cv2.imshow('image',img)
     cv2.imshow('Straightening',img2)
+    cv2.imshow('Histogram',equalization_img)
     key_code = cv2.waitKey(100)
     if key_code == 27:
         break
