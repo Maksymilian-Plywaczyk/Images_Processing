@@ -10,7 +10,7 @@ def MouseCallback(event, x, y, flags, param):
     global rectagle, circle
     if event == cv2.EVENT_LBUTTONUP : #idicates that the left mouse button is released
             rectagle+=1
-            cv2.rectangle(img, (x, y), (x+100, y+100), (255, 0, 0), cv2.FILLED) #COLOUR  BGR in OPENCV
+            cv2.rectangle(img, (x, y), (x+50, y+50), (255, 0, 0), cv2.FILLED) #COLOUR  BGR in OPENCV
             cv2.putText(img,"Rectangle: "+str(rectagle),(x,y),fontFace,2,(255,255,255))
     if event == cv2.EVENT_RBUTTONUP : #idicates that the right  mouse button is released
             circle +=1
@@ -22,17 +22,18 @@ def MouseCallback(event, x, y, flags, param):
 
 
 img = np.zeros((512, 512, 3), np.uint8) #create a black image, a window bind the function to window
-#cv2.namedWindow('image')
-#cv2.setMouseCallback('image', MouseCallback)
+cv2.namedWindow('image')
+cv2.setMouseCallback('image', MouseCallback)
 
 path = "road.jpg"
 img2 = cv2.imread(path)
 cv2.namedWindow('Straightening')
-img2 = cv2.resize(img2, None,fx=0.5,fy=0.5)
+Size=(1920,1080)
+img2 = cv2.resize(img2,Size,interpolation=cv2.INTER_AREA)
 cv2.setMouseCallback('Straightening', MouseCallback)
 
 while True:
-    #cv2.imshow('image',img)
+    cv2.imshow('image',img)
     cv2.imshow('Straightening',img2)
     key_code = cv2.waitKey(100)
     if key_code == 27:
