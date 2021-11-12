@@ -97,9 +97,9 @@ while True:
     on_trackbar(0)
     negative_function()
     key_code = cv2.waitKey(0)
-    if key_code == ord('k'):
+    if key_code == 27:
         # escape key pressed
-        break
+        exit()
 
 # closes all windows (usually optional as the script ends anyway)
 cv2.destroyAllWindows()
