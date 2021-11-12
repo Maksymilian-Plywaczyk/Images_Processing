@@ -1,14 +1,11 @@
 import cv2
 import numpy as np
 from time import perf_counter
-
 def empty_callback(value):
     print(f'Trackbar reporting for duty with value: {value}')
     pass
-
-
 def filter2D():
-    path="baby_yoda.jpg.JPG"
+    path="baby_yoda.jpg"
     img=cv2.imread(path,0)
     nameWindow='Standard photo in colour grey'
     nameWindow1='Sobel mask x'
@@ -19,11 +16,11 @@ def filter2D():
     print('Max value of SobelX: ',np.max(sobelx))
     print('Max value of SobelY: ',np.max(sobely))
     np.abs(sobelx).astype(np.uint8)
+    module=np.sqrt(sobelx ** 2 + sobely ** 2)
     module=np.sqrt(pow(sobelx,2) + pow(sobely,2))
 
     print('Max value of module: ',np.max(module))
     while True:
-
         cv2.imshow(nameWindow,img)
         cv2.imshow(nameWindow1,np.abs(sobelx).astype(np.uint8))
         cv2.imshow(nameWindow2, np.abs(sobely).astype(np.uint8))
