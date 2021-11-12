@@ -3,9 +3,19 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 
+<<<<<<< HEAD
 rectagle = 0
 circle = 0
 selected_points = []
+=======
+drawing = False  # true if mouse is pressed
+mode =  True    # if True, draw rectangle.
+ix, iy = -1, -1
+
+fontFace = cv.FONT_HERSHEY_SCRIPT_SIMPLEX
+rectagle =0
+circle =0git
+>>>>>>> faf526a (Refactoring)
 # mouse callback function
 def MouseCallback(event, x, y, flags, param):
     fontFace = cv2.FONT_HERSHEY_COMPLEX_SMALL

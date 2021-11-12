@@ -8,7 +8,7 @@ def empty_callback(value):
 
 
 def filter2D():
-    path="baby_yoda.jpg"
+    path="baby_yoda.jpg.JPG"
     img=cv2.imread(path,0)
     nameWindow='Standard photo in colour grey'
     nameWindow1='Sobel mask x'
