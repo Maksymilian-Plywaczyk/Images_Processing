@@ -8,6 +8,7 @@ ix, iy = -1, -1
 fontFace = cv.FONT_HERSHEY_SCRIPT_SIMPLEX
 rectagle =0
 circle =0
+square=0
 # mouse callback function
 def draw_circle(event, x, y, flags, param):
     global ix, iy, drawing, mode,rectagle,circle
