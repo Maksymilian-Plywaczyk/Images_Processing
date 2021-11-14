@@ -66,8 +66,12 @@ while True:
         M = cv2.getPerspectiveTransform(pts11,pts22)
         dst = cv2.warpPerspective(img4,M,(img5.shape[1],img5.shape[0]))
         ret,mask=cv2.threshold(dst,0,255,cv2.THRESH_BINARY)
-        img5[mask!=0]=0
+        arr=img5[mask!=0]=0
+        # indeks 0 -> false
+        # indes 1 -> true
         img6 = dst+img5
+        print(arr)
+        print(mask)
         cv2.imshow('Mops in gallery',img6)
 
 
