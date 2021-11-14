@@ -35,9 +35,9 @@ img2 = cv2.resize(img2,Size,interpolation=cv2.INTER_AREA)
 cv2.setMouseCallback('Straightening', MouseCallback)
 
 img3 = cv2.imread('baby_yoda.jpg',0)
-equalization_img = cv2.equalizeHist(img3)
+equalization_img = cv2.equalizeHist(img3)#wyrownuje histogram zdjecia
 histogram_img = cv2.calcHist([equalization_img],[0],None,[256],[0,256])
-histogram_img2 = cv2.calcHist([img3],[0],None,[256],[0,256])
+histogram_img2 = cv2.calcHist([equalization_img],[0],None,[256],[0,256])
 plt.plot(histogram_img2); plt.show()
 while True:
     cv2.imshow('image',img)
