@@ -40,8 +40,24 @@ def Canny():
         cv2.imshow('Canny algorithm',canny)
         key_code=cv2.waitKey(1)
         if key_code==27:
+            break
+
+def DetectingLines():
+    path='shapes.jpg'
+    img=cv2.imread(path,1)
+    canny=cv2.Canny(img,50,150,apertureSize=3)
+    lines = cv2.HoughLinesP(canny, 1, np.pi / 180, 30, minLineLength=10, maxLineGap=25)
+    for line in lines:
+        x1, y1, x2, y2 = line[0]
+        cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+    while True:
+        cv2.imshow('Result',img)
+        key_code=cv2.waitKey(1)
+        if key_code==27:
             exit()
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     filter2D()
     Canny()
+    DetectingLines()
