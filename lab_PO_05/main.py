@@ -44,12 +44,19 @@ def Canny():
 
 def DetectingLines():
     path='shapes.jpg'
-    img=cv2.imread(path,1)
-    canny=cv2.Canny(img,50,150,apertureSize=3)
+    img=cv2.imread(path)
+    gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    canny=cv2.Canny(gray,50,150,apertureSize=3)
+    blurred=cv2.medianBlur(gray,25)
     lines = cv2.HoughLinesP(canny, 1, np.pi / 180, 30, minLineLength=10, maxLineGap=25)
+    circles=cv2.HoughCircles(blurred,cv2.HOUGH_GRADIENT,dp=1,minDist=100,param1=30,param2=50,minRadius=0,maxRadius=100)
+    circles = np.uint16(np.around(circles))
+    print(circles)
     for line in lines:
         x1, y1, x2, y2 = line[0]
         cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+    for circle in circles[0,:]:
+        cv2.circle(img,(circle[0],circle[1]),circle[2],(255,0,0),2)
     while True:
         cv2.imshow('Result',img)
         key_code=cv2.waitKey(1)
