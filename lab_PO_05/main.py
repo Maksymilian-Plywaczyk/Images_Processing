@@ -44,7 +44,6 @@ def Canny():
         key_code=cv2.waitKey(1)
         if key_code==27:
             break
-
 def DetectingLinesCircle():
     path='shapes.jpg'
     img=cv2.imread(path)
@@ -79,10 +78,38 @@ def DetectingLinesCircle():
         cv2.imshow('Result',img)
         key_code=cv2.waitKey(1)
         if key_code==27:
-            exit()
+            break
+def PlatformDronLines():
+   path='drone_ship.jpg'
+   img=cv2.imread(path)
+   img_gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+   gaussian_blur=cv2.GaussianBlur(img_gray,(13,13),0)
+   median_blur=cv2.medianBlur(img_gray,5)
+   canny_gaussian=cv2.Canny(gaussian_blur,100,200)#mozna pozmieniac progi wykrywania krawedzi
+   canny2_median=cv2.Canny(median_blur,50,150)
+   rho = 1  # distance resolution in pixels of the Hough grid
+   theta = np.pi / 180  # angular resolution in radians of the Hough grid
+   threshold = 10  # minimum number of votes (intersections in Hough grid cell)
+   min_line_length = 1  # minimum number of pixels making up a line
+   max_line_gap = 12  # maximum gap in pixels between connectable line segments
+   lines = cv2.HoughLinesP(canny_gaussian, rho, theta, threshold, np.array([]),
+     min_line_length, max_line_gap)
+   for line in lines:
+       for x1, y1, x2, y2 in line:
+           cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+           print('Start line: ', (x1, y1), 'End line: ', (x2, y2))
+   while True:
+       cv2.imshow('Result', canny_gaussian)
+       cv2.imshow('Result2',canny2_median)
+       cv2.imshow('Result3', canny2_blur)
+       #cv2.imshow('Patform',img)
+       key_code = cv2.waitKey(1)
+       if key_code == 27:
+           exit()
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    filter2D()
-    Canny()
-    DetectingLinesCircle()
+    # filter2D()
+    # Canny()
+    # DetectingLinesCircle()
+    PlatformDronLines()
