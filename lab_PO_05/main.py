@@ -1,4 +1,5 @@
 import cv2
+import imageio
 import numpy as np
 from time import perf_counter
 from skimage.transform import hough_ellipse
@@ -56,9 +57,10 @@ def DetectingLinesCircle():
     threshold = 15  # minimum number of votes (intersections in Hough grid cell)
     min_line_length = 1 # minimum number of pixels making up a line
     max_line_gap = 12  # maximum gap in pixels between connectable line segments
-    lines = cv2.HoughLinesP(canny, rho,theta, threshold, np.array([]), min_line_length, max_line_gap)
-    circles=cv2.HoughCircles(blurred,cv2.HOUGH_GRADIENT,dp=1,minDist=30,param1=10,param2=50,minRadius=0,maxRadius=100)
-    #ellipses=hough_ellipse(canny,accuracy=4,threshold=10,min_size=0,max_size=0)
+    lines = cv2.HoughLinesP(canny, rho,theta, threshold, np.array([]),
+        min_line_length, max_line_gap)
+    circles=cv2.HoughCircles(blurred,cv2.HOUGH_GRADIENT,dp=1,minDist=30,param1=10,param2=50,
+        minRadius=0,maxRadius=100)
     #minRadius=0,maxRadius=0 algorytm sam okresla maksymalny i minimalny promien okregu.
     circles = np.uint16(np.around(circles))
     count =0
@@ -71,10 +73,8 @@ def DetectingLinesCircle():
         print('X coordinate:  ',circle[0],'Y coorditate: ',circle[1],'Radians: ',circle[2])
         count +=1
         print(count)
-        cv2.putText(img,'Circle: '+str(count),(circle[0],circle[1]),cv2.FONT_HERSHEY_SIMPLEX,0.7,(255,0,0),2)
-    # for ellipse in ellipses[0,:]:
-    #     cy,cx=ellipse_perimeter(ellipse[0],ellipse[1],ellipse[2],ellipse[2],0)
-    #     img[cy,cx]=(0,0,0)
+        cv2.putText(img,'Circle: '+str(count),(circle[0],circle[1]),cv2.FONT_HERSHEY_SIMPLEX
+        ,0.7,(255,0,0),2)
     while True:
         cv2.imshow('Result',img)
         key_code=cv2.waitKey(1)
