@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 from time import perf_counter
+from skimage.transform import hough_ellipse
+from skimage.draw import ellipse_perimeter
 def empty_callback(value):
     print(f'Trackbar reporting for duty with value: {value}')
     pass
@@ -42,7 +44,7 @@ def Canny():
         if key_code==27:
             break
 
-def DetectingLines():
+def DetectingLinesCircle():
     path='shapes.jpg'
     img=cv2.imread(path)
     gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -56,14 +58,23 @@ def DetectingLines():
     max_line_gap = 12  # maximum gap in pixels between connectable line segments
     lines = cv2.HoughLinesP(canny, rho,theta, threshold, np.array([]), min_line_length, max_line_gap)
     circles=cv2.HoughCircles(blurred,cv2.HOUGH_GRADIENT,dp=1,minDist=30,param1=10,param2=50,minRadius=0,maxRadius=100)
+    #ellipses=hough_ellipse(canny,accuracy=4,threshold=10,min_size=0,max_size=0)
     #minRadius=0,maxRadius=0 algorytm sam okresla maksymalny i minimalny promien okregu.
     circles = np.uint16(np.around(circles))
-    print(circles)
+    count =0
     for line in lines:
       for x1,y1,x2,y2 in line:
         cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        print('Start line: ',(x1,y1),'End line: ',(x2,y2))
     for circle in circles[0,:]:
         cv2.circle(img,(circle[0],circle[1]),circle[2],(255,0,0),2)
+        print('X coordinate:  ',circle[0],'Y coorditate: ',circle[1],'Radians: ',circle[2])
+        count +=1
+        print(count)
+        cv2.putText(img,'Circle: '+str(count),(circle[0],circle[1]),cv2.FONT_HERSHEY_SIMPLEX,0.7,(255,0,0),2)
+    # for ellipse in ellipses[0,:]:
+    #     cy,cx=ellipse_perimeter(ellipse[0],ellipse[1],ellipse[2],ellipse[2],0)
+    #     img[cy,cx]=(0,0,0)
     while True:
         cv2.imshow('Result',img)
         key_code=cv2.waitKey(1)
@@ -74,4 +85,4 @@ def DetectingLines():
 if __name__ == '__main__':
     filter2D()
     Canny()
-    DetectingLines()
+    DetectingLinesCircle()
