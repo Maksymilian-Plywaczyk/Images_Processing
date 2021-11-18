@@ -101,15 +101,37 @@ def PlatformDronLines():
    while True:
        cv2.imshow('Result', canny_gaussian)
        cv2.imshow('Result2',canny2_median)
-       cv2.imshow('Result3', canny2_blur)
-       #cv2.imshow('Patform',img)
+       cv2.imshow('Patform',img)
        key_code = cv2.waitKey(1)
        if key_code == 27:
-           exit()
+           break
 
+def CoinDetected():
+    path='coins.jpg'
+    img=cv2.imread(path)
+    img_gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    gaussianblur=cv2.GaussianBlur(img_gray,(13,13),0)
+    circles=cv2.HoughCircles(gaussianblur,cv2.HOUGH_GRADIENT,dp=1,minDist=50,param1=10,param2=50,
+        minRadius=50,maxRadius=107)
+    circles=np.uint16(np.around(circles))
+    radius = []
+    for circle in circles[0,:]:
+        cv2.circle(img, (circle[0], circle[1]), circle[2], (0, 0, 255), 2)
+        print('X coordinate:  ', circle[0], 'Y coorditate: ', circle[1]
+        , 'Radians: ', circle[2])
+        radius.append([circle[2]])
+        print(radius)
+    smallest=min(radius)
+    print(smallest)
+    while True:
+        cv2.imshow('Result',img)
+        key_code=cv2.waitKey(1)
+        if key_code==27:
+            exit()
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     # filter2D()
     # Canny()
     # DetectingLinesCircle()
-    PlatformDronLines()
+    # PlatformDronLines()
+    CoinDetected()
