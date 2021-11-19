@@ -127,27 +127,21 @@ def CoinDetected():
     print(largest)
     count =0
     count2=0
-    value=dict()
-    value['0.1']=0
-    value['1']=0
+    value = []
     for coin in circles[0,:]:
-        if coin[2]==smallest:
+        if coin[2]<=53:
             count+=1
             cv2.putText(img, 'Circle: ' + str(count), (coin[0],coin[1]), cv2.FONT_HERSHEY_SIMPLEX
                         , 0.7, (255, 0, 0), 2)
-            value['0.1'] += 1
+            value.append(0.1)
         if coin[2]==largest:
             count2+=1
             cv2.putText(img, 'Circle: ' + str(count2), (coin[0], coin[1]), cv2.FONT_HERSHEY_SIMPLEX
                         , 0.7, (0, 255, 0), 2)
-            value['1'] += 1
-            print(count2)
-
-    summary = 0
-    for i in value:
-        summary += float(i) * value[i]
-        mess = (f"We've {summary} zl here")
-        print(mess)
+            value.append(1)
+    money=sum(value)
+    sum_of_money=np.around(money,1)
+    print('Suma zebranych pieniedzy: ',sum_of_money,'zl')
 
     while True:
         cv2.imshow('Result',img)
