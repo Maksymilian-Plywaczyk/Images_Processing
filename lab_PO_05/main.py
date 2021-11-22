@@ -147,7 +147,7 @@ def CoinDetected():
         key_code=cv2.waitKey(1)
         if key_code==27:
             break
-def FruitDetection():
+def FruitDetection():   ###TODO tomorrow
     path='fruit.jpg'
     img = cv2.imread(path)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -157,11 +157,38 @@ def FruitDetection():
     circles = np.uint16(np.around(circles))
     radius=[]
     for circle in circles[0, :]:
+        corx,cory=circle[0],circle[1]
         cv2.circle(img, (circle[0], circle[1]), circle[2], (0, 0, 255), 2)
         print('X coordinate:  ', circle[0], 'Y coorditate: ', circle[1]
               , 'Radians: ', circle[2])
+        cv2.putText(img,'Radius: '+str(circle[2]),(corx,cory),cv2.FONT_HERSHEY_SIMPLEX
+                        , 0.7, (255, 0, 0), 2)
         radius.append([circle[2]])
         print(radius)
+ ##TODO sprawdzic jak sie sortuje po kolorze, rozkminic##
+    fruits={
+    "Orange": {
+        "value": 1,
+        "color": 'orange',
+        "count": 0,
+    },
+    "Apple": {
+        "value": 2,
+        "color": 'green',
+        "count": 0,
+    },
+    }
+    total_amount = 0
+    count=0
+    for fruitt in circles[0,:]:
+        corx=fruitt[0]
+        cory=fruitt[1]
+        for fruit in fruits:
+            value=fruits[fruit]['value']
+            if fruits[fruit]['color']=='orange':
+                count=fruits[fruit]['count']
+                count+=1
+                total_amount += fruits[fruit]['value']
     while True:
         cv2.imshow('GaussianBlur',gaussianblur)
         cv2.imshow('Result', img)
