@@ -4,6 +4,7 @@ import numpy as np
 from time import perf_counter
 from skimage.transform import hough_ellipse
 from skimage.draw import ellipse_perimeter
+
 def empty_callback(value):
     print(f'Trackbar reporting for duty with value: {value}')
     pass
@@ -151,47 +152,20 @@ def FruitDetection():   ###TODO tomorrow
     path='fruit.jpg'
     img = cv2.imread(path)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gaussianblur = cv2.GaussianBlur(img_gray, (13, 13), 0)
-    circles = cv2.HoughCircles(gaussianblur, cv2.HOUGH_GRADIENT, dp=1, minDist=50, param1=10, param2=50,
-                               minRadius=100, maxRadius=200)
-    circles = np.uint16(np.around(circles))
-    radius=[]
-    for circle in circles[0, :]:
-        corx,cory=circle[0],circle[1]
-        cv2.circle(img, (circle[0], circle[1]), circle[2], (0, 0, 255), 2)
-        print('X coordinate:  ', circle[0], 'Y coorditate: ', circle[1]
-              , 'Radians: ', circle[2])
-        cv2.putText(img,'Radius: '+str(circle[2]),(corx,cory),cv2.FONT_HERSHEY_SIMPLEX
-                        , 0.7, (255, 0, 0), 2)
-        radius.append([circle[2]])
-        print(radius)
+    boundaries = [
+        ([0, 0, 0], [80, 165, 255]),
+    ]
+    for lower,upper in boundaries:
+        lower=np.array(lower,dtype="uint8")
+        upper=np.array(upper,dtype="uint8")
+        print(lower)
+        mask = cv2.inRange(img, lower, upper)
+        output = cv2.bitwise_and(img, img, mask=mask)
+
+
  ##TODO sprawdzic jak sie sortuje po kolorze, rozkminic##
-    fruits={
-    "Orange": {
-        "value": 1,
-        "color": 'orange',
-        "count": 0,
-    },
-    "Apple": {
-        "value": 2,
-        "color": 'green',
-        "count": 0,
-    },
-    }
-    total_amount = 0
-    count=0
-    for fruitt in circles[0,:]:
-        corx=fruitt[0]
-        cory=fruitt[1]
-        for fruit in fruits:
-            value=fruits[fruit]['value']
-            if fruits[fruit]['color']=='orange':
-                count=fruits[fruit]['count']
-                count+=1
-                total_amount += fruits[fruit]['value']
     while True:
-        cv2.imshow('GaussianBlur',gaussianblur)
-        cv2.imshow('Result', img)
+        cv2.imshow('Result', np.hstack([img,output]))
         key_code = cv2.waitKey(1)
         if key_code == 27:
             exit()
