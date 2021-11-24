@@ -151,21 +151,50 @@ def CoinDetected():
 def FruitDetection():   ###TODO tomorrow
     path='fruit.jpg'
     img = cv2.imread(path)
-    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    boundaries = [
-        ([0, 0, 0], [80, 165, 255]),
+    fruits=dict()
+    boundaries_orange = [
+        [[0, 0, 0], [80, 165, 255]],
     ]
-    for lower,upper in boundaries:
-        lower=np.array(lower,dtype="uint8")
-        upper=np.array(upper,dtype="uint8")
-        print(lower)
-        mask = cv2.inRange(img, lower, upper)
-        output = cv2.bitwise_and(img, img, mask=mask)
+    boundaries_apple= [
+        [[31,91,82],[74,255,210]],
+    ]
+    print(boundaries_orange[0][0])
+    lower_orange=np.array(boundaries_orange[0][0], np.uint8)
+    upper_orange=np.array(boundaries_orange[0][1], np.uint8)
+    lower_apple = np.array(boundaries_apple[0][0], np.uint8)
+    upper_apple = np.array(boundaries_apple[0][1], np.uint8)
+    print(len(lower_orange.shape))
+    mask = cv2.inRange(img, lower_orange, upper_orange)
+    output_orange = cv2.bitwise_and(img, img, mask=mask)
+    output_orange=cv2.cvtColor(output_orange,cv2.COLOR_BGR2GRAY)
+    circles_orange = cv2.HoughCircles(output_orange, cv2.HOUGH_GRADIENT, dp=1, minDist=50, param1=50, param2=30,
+                               minRadius=110, maxRadius=140)
+
+    circles = np.uint16(np.around(circles_orange))
+    fruits['o']=circles
 
 
- ##TODO sprawdzic jak sie sortuje po kolorze, rozkminic##
+    mask_apple = cv2.inRange(img, lower_apple, upper_apple)
+    output_apple = cv2.bitwise_and(img, img, mask=mask_apple)
+    output_apple = cv2.cvtColor(output_apple, cv2.COLOR_BGR2GRAY)
+    circles_apple = cv2.HoughCircles(output_apple, cv2.HOUGH_GRADIENT, dp=1, minDist=50, param1=50, param2=30,
+                                      minRadius=110, maxRadius=140)
+    circles = np.uint16(np.around(circles_apple))
+    fruits['g'] = circles
+
+    for color,circle in fruits.items():
+        if color=='o':
+            for circl in circle[0,:]:
+                if circl[2]>=110:
+                    cv2.circle(img,(circl[0],circl[1]),circl[2],(0,0,255),2)
+
+        else:
+            for circl in circle[0,:]:
+                if circl[2] >= 110:
+                    cv2.circle(img, (circl[0], circl[1]), circl[2], (0, 255, 0), 2)
+ ##TODO dobrac lepsze parametry
     while True:
-        cv2.imshow('Result', np.hstack([img,output]))
+        cv2.imshow('Result', img)
         key_code = cv2.waitKey(1)
         if key_code == 27:
             exit()
