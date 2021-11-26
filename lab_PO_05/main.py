@@ -167,7 +167,7 @@ def FruitDetection():   ###TODO tomorrow
     mask = cv2.inRange(img, lower_orange, upper_orange)
     output_orange = cv2.bitwise_and(img, img, mask=mask)
     output_orange=cv2.cvtColor(output_orange,cv2.COLOR_BGR2GRAY)
-    circles_orange = cv2.HoughCircles(output_orange, cv2.HOUGH_GRADIENT, dp=1, minDist=50, param1=50, param2=30,
+    circles_orange = cv2.HoughCircles(output_orange, cv2.HOUGH_GRADIENT, dp=1, minDist=50, param1=10, param2=40,
                                minRadius=110, maxRadius=140)
 
     circles = np.uint16(np.around(circles_orange))
@@ -177,8 +177,8 @@ def FruitDetection():   ###TODO tomorrow
     mask_apple = cv2.inRange(img, lower_apple, upper_apple)
     output_apple = cv2.bitwise_and(img, img, mask=mask_apple)
     output_apple = cv2.cvtColor(output_apple, cv2.COLOR_BGR2GRAY)
-    circles_apple = cv2.HoughCircles(output_apple, cv2.HOUGH_GRADIENT, dp=1, minDist=50, param1=50, param2=30,
-                                      minRadius=110, maxRadius=140)
+    circles_apple = cv2.HoughCircles(output_apple, cv2.HOUGH_GRADIENT, dp=1, minDist=50, param1=10, param2=30,
+                                      minRadius=110, maxRadius=135)
     circles = np.uint16(np.around(circles_apple))
     fruits['g'] = circles
 
