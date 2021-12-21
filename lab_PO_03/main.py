@@ -89,7 +89,7 @@ def OperationMorphologic():
 
 
 def SmoothingImage():
-    path = "krysiak.jpg"
+    path = "baby_yoda.jpg"
     img=cv2.imread(path, 0)
     cv2.namedWindow('SmoothingImage')
     dim=(3,3)
@@ -133,7 +133,7 @@ def SmoothingImage():
 
 
 def ScalingImage():
-    path = "krysiak.jpg"
+    path = "baby_yoda.jpg"
     img = cv2.imread(path, 0)
     cv2.namedWindow('ScalingImage')
     cv2.namedWindow('BlurScaling')

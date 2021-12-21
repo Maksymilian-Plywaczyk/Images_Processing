@@ -7,7 +7,7 @@ def empty_callback(value):
     pass
 
 
-path = "krysiak.jpg"
+path = "baby_yoda.jpg"
 img = cv2.imread(path, 1)
 
 path2 = "logo_put.png"
