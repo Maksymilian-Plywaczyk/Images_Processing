@@ -47,7 +47,7 @@ def on_trackbar(val):
 
 def scaled_photo():
     time_start=perf_counter()
-    path1 = "qr.jpg"  # way relative, qr.jpg sitting in the same place like main.py
+    path1 = "qr.jpg"  # way relative, qr.jpg sitting in the same place like detect_fruits.py
     img1 = cv2.imread(path1, 1)
     img_scaled = cv2.resize(img1, None, fx=2.75, fy=2.75, interpolation=cv2.INTER_LINEAR)
     cv2.imshow('resize window', img_scaled)
