@@ -1,0 +1,1 @@
+## sprawdzanie różnych rozwiązań
