@@ -158,12 +158,11 @@ def FruitDetection():   ###TODO tomorrow
     boundaries_apple= [
         [[31,91,82],[74,255,210]],
     ]
-    print(boundaries_orange[0][0])
     lower_orange=np.array(boundaries_orange[0][0], np.uint8)
     upper_orange=np.array(boundaries_orange[0][1], np.uint8)
     lower_apple = np.array(boundaries_apple[0][0], np.uint8)
     upper_apple = np.array(boundaries_apple[0][1], np.uint8)
-    print(len(lower_orange.shape))
+
     mask = cv2.inRange(img, lower_orange, upper_orange)
     output_orange = cv2.bitwise_and(img, img, mask=mask)
     output_orange=cv2.cvtColor(output_orange,cv2.COLOR_BGR2GRAY)
@@ -180,8 +179,10 @@ def FruitDetection():   ###TODO tomorrow
     circles_apple = cv2.HoughCircles(output_apple, cv2.HOUGH_GRADIENT, dp=1, minDist=50, param1=10, param2=30,
                                       minRadius=110, maxRadius=135)
     circles = np.uint16(np.around(circles_apple))
-    fruits['g'] = circles
 
+    fruits['g'] = circles
+    print(circles)
+    print(fruits)
     for color,circle in fruits.items():
         if color=='o':
             for circl in circle[0,:]:
@@ -201,9 +202,9 @@ def FruitDetection():   ###TODO tomorrow
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    filter2D()
-    Canny()
-    DetectingLinesCircle()
-    PlatformDronLines()
-    CoinDetected()
+    # filter2D()
+    # Canny()
+    # DetectingLinesCircle()
+    # PlatformDronLines()
+    # CoinDetected()
     FruitDetection()
