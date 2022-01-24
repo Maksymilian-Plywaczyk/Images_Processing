@@ -163,8 +163,8 @@ def ScalingImage():
 
 
 if __name__ == "__main__":  # makeshift main
-    Filtering()
+    #Filtering()
     OperationMorphologic()
-    ScalingImage()
-    SmoothingImage()
+    # ScalingImage()
+    # SmoothingImage()
 cv2.destroyAllWindows()
