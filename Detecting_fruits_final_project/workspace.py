@@ -11,7 +11,7 @@ def HSV_without_trackbar():
     orange = 0
     apple =  0
     banana = 0
-    path = "data/09.jpg"
+    path = "data/02.jpg"
     jpg = cv2.imread(path,1)
     jpg = cv2.resize(jpg, dsize=(1000, 800), interpolation=cv2.INTER_AREA)
     hsv_jpg = cv2.cvtColor(jpg, cv2.COLOR_BGR2HSV)
