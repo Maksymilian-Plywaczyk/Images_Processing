@@ -11,9 +11,10 @@ def HSV_without_trackbar():
     orange = 0
     apple =  0
     banana = 0
-    path = "data/02.jpg"
+    path = "data/09.jpg"
     jpg = cv2.imread(path,1)
-    jpg = cv2.resize(jpg, dsize=(1000, 800), interpolation=cv2.INTER_AREA)
+    resize_jpg = cv2.resize(jpg, dsize=(1000, 800), interpolation=cv2.INTER_AREA)
+    jpg = cv2.GaussianBlur(resize_jpg,(19,19),0)
     hsv_jpg = cv2.cvtColor(jpg, cv2.COLOR_BGR2HSV)
 
     #Banana
@@ -24,38 +25,42 @@ def HSV_without_trackbar():
     banana_contours = banana_contours[0]
     for c in banana_contours:
         x,y,w,h = cv2.boundingRect(c)
-        print('Banana width', w)
-        if w > 119:
+        contour = cv2.contourArea(c)
+        if contour > 7500:
+            print('contour area of banana', contour)
             cv2.rectangle(jpg, (x, y),(x + w, y + h), (0,0,255), 2) ##BGR
             banana += 1
 
 
     #Orange
-    lower_orange = np.array([10, 200, 200])
-    upper_orange = np.array([25, 255, 255])
+    lower_orange = np.array([0, 217, 0]) # 10 200 200
+    upper_orange = np.array([19, 255, 255]) # 25 255 255
     mask_orange = cv2.inRange(hsv_jpg,lower_orange,upper_orange)
     orange_contours = cv2.findContours(mask_orange,cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     orange_contours = orange_contours[0]
     for o in orange_contours:
         x,y,w,h = cv2.boundingRect(o)
-        print('Orange width',w)
-        if w > 64:
+        contour = cv2.contourArea(o)
+        if contour > 8000:
+            print('contour area of orange', contour)
             cv2.rectangle(jpg, (x, y),(x + w, y + h), (255,0,0), 2) ##BGR
             orange += 1
 
 
-    lower2 = np.array([0, 128, 24])
-    upper2 = np.array([10, 255, 255])
+    lower2 = np.array([0, 36, 0]) #0 128 24    0 125 0
+    upper2 = np.array([12, 220, 255]) #10 255 255 31 255 148
 
     upper_mask = cv2.inRange(hsv_jpg, lower2, upper2)
 
     apple_mask = upper_mask
     apple_contours = cv2.findContours(apple_mask,cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     apple_contours = apple_contours[0]
-    for o in apple_contours:
-        x,y,w,h = cv2.boundingRect(o)
-        print('Apple height: ',h)
-        if h > 80:
+    for a in apple_contours:
+        x,y,w,h = cv2.boundingRect(a)
+        contour = cv2.contourArea(a)
+        print('contour area of apple all', contour)
+        if contour> 4000: #contours area function need to check
+            print('contour area of apple', contour)
             cv2.rectangle(jpg, (x, y),(x + w, y + h), (0,255,0), 2) ##BGR
             apple += 1
 
@@ -71,11 +76,12 @@ def HSV_without_trackbar():
             exit()
 
 def HSV_with_trackbar():
-    path = "data/00.jpg"
+    path = "data/07.jpg"
     nameWindow = "Trackbar HSV"
     img = cv2.imread(path, 1)
     resize_img = cv2.resize(img, dsize=(1000, 800), interpolation=cv2.INTER_AREA)
-    hsv_img = cv2.cvtColor(resize_img, cv2.COLOR_BGR2HSV)
+    gaus= cv2.GaussianBlur(resize_img, (19, 19), 0)
+    hsv_img = cv2.cvtColor(gaus, cv2.COLOR_BGR2HSV)
     cv2.namedWindow(nameWindow)
     #lower range
     cv2.createTrackbar("LH",nameWindow,  0, 255, empty_callback)
@@ -106,10 +112,11 @@ def HSV_with_trackbar():
 
         cv2.imshow('Trackbar_HSV', result_img)
         cv2.imshow('Mask',mask)
+        cv2.imshow('HSV',hsv_img)
         key_code = cv2.waitKey(1)
         if key_code == 27:
             exit()
     cv2.destroyAllWindows()
 
-#HSV_with_trackbar()
+# HSV_with_trackbar()
 HSV_without_trackbar()
