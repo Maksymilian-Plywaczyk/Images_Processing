@@ -25,7 +25,8 @@ def detect_fruits(img_path: str) -> Dict[str, int]:
     orange = 0
     apple = 0
     banana = 0
-    jpg = cv2.resize(jpg, dsize=(1000, 800), interpolation=cv2.INTER_AREA)
+    resize_jpg = cv2.resize(jpg, dsize=(1000, 800), interpolation=cv2.INTER_AREA)
+    jpg = cv2.GaussianBlur(resize_jpg, (19, 19), 0)
     hsv_jpg = cv2.cvtColor(jpg, cv2.COLOR_BGR2HSV)
 
     # Banana
@@ -35,37 +36,33 @@ def detect_fruits(img_path: str) -> Dict[str, int]:
     banana_contours = cv2.findContours(mask_banana, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     banana_contours = banana_contours[0]
     for c in banana_contours:
-        x, y, w, h = cv2.boundingRect(c)
-        if w > 119:
-            cv2.rectangle(jpg, (x, y), (x + w, y + h), (0, 0, 255), 2)  ##BGR
+        contour = cv2.contourArea(c)
+        if contour > 2500:
             banana += 1
 
     # Orange
-    lower_orange = np.array([10, 200, 200])
-    upper_orange = np.array([25, 255, 255])
+    lower_orange = np.array([0, 217, 0])  # 10 200 200
+    upper_orange = np.array([19, 255, 255])  # 25 255 255
     mask_orange = cv2.inRange(hsv_jpg, lower_orange, upper_orange)
     orange_contours = cv2.findContours(mask_orange, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     orange_contours = orange_contours[0]
     for o in orange_contours:
-        x, y, w, h = cv2.boundingRect(o)
-        if w > 64:
-            cv2.rectangle(jpg, (x, y), (x + w, y + h), (255, 0, 0), 2)  ##BGR
+        contour = cv2.contourArea(o)
+        if contour > 2000:
             orange += 1
 
-    lower2 = np.array([0, 128, 24])
-    upper2 = np.array([10, 255, 255])
+    lower2 = np.array([0, 36, 0])  # 0 128 24    0 125 0
+    upper2 = np.array([13, 220, 255])  # 10 255 255 31 255 148
 
     upper_mask = cv2.inRange(hsv_jpg, lower2, upper2)
 
     apple_mask = upper_mask
     apple_contours = cv2.findContours(apple_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     apple_contours = apple_contours[0]
-    for o in apple_contours:
-        x, y, w, h = cv2.boundingRect(o)
-        if h > 80:
-            cv2.rectangle(jpg, (x, y), (x + w, y + h), (0, 255, 0), 2)  ##BGR
+    for a in apple_contours:
+        contour = cv2.contourArea(a)
+        if contour > 2000:  # contours area function need to check
             apple += 1
-
     return {'apple': apple, 'banana': banana, 'orange': orange}
 
 @click.command()

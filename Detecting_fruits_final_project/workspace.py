@@ -2,14 +2,14 @@
 import cv2
 import numpy as np
 
-##TODO poprawić implementacje problemu, aby optymalizacja byla sprawniejsza
-#TODO sprawdzić tracbara
+
 def empty_callback(value):
     print(f'Trackbar reporting for duty with value: {value}')
     pass
+
 def HSV_without_trackbar():
     orange = 0
-    apple =  0
+    apple = 0
     banana = 0
     path = "data/09.jpg"
     jpg = cv2.imread(path,1)
@@ -28,7 +28,7 @@ def HSV_without_trackbar():
         contour = cv2.contourArea(c)
         if contour > 7500:
             print('contour area of banana', contour)
-            cv2.rectangle(jpg, (x, y),(x + w, y + h), (0,0,255), 2) ##BGR
+            cv2.rectangle(resize_jpg, (x, y),(x + w, y + h), (0,0,255), 2) ##BGR
             banana += 1
 
 
@@ -43,7 +43,7 @@ def HSV_without_trackbar():
         contour = cv2.contourArea(o)
         if contour > 8000:
             print('contour area of orange', contour)
-            cv2.rectangle(jpg, (x, y),(x + w, y + h), (255,0,0), 2) ##BGR
+            cv2.rectangle(resize_jpg, (x, y),(x + w, y + h), (255,0,0), 2) ##BGR
             orange += 1
 
 
@@ -60,7 +60,7 @@ def HSV_without_trackbar():
         contour = cv2.contourArea(a)
         if contour> 8000: #contours area function need to check
             print('contour area of apple', contour)
-            cv2.rectangle(jpg, (x, y),(x + w, y + h), (0,255,0), 2) ##BGR
+            cv2.rectangle(resize_jpg, (x, y),(x + w, y + h), (0,255,0), 2) ##BGR
             apple += 1
 
 
@@ -68,8 +68,8 @@ def HSV_without_trackbar():
     print('Number of banana: '+str(banana))
     print('Number of apple: '+str(apple))
     while True:
-        cv2.imshow('Result',jpg)
-        cv2.imshow('Mask',apple_mask)
+        cv2.imshow('Result',resize_jpg)
+        # cv2.imshow('Mask',apple_mask)
         key_code = cv2.waitKey(1)
         if key_code == 27:
             exit()
