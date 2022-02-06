@@ -11,7 +11,8 @@ def HSV_without_trackbar():
     orange = 0
     apple = 0
     banana = 0
-    path = "data/09.jpg"
+
+    path = "data/03.jpg"
     jpg = cv2.imread(path,1)
     resize_jpg = cv2.resize(jpg, dsize=None,fx=0.25,fy=0.25, interpolation=cv2.INTER_AREA)
     jpg = cv2.GaussianBlur(resize_jpg,(19,19),0)
@@ -24,30 +25,35 @@ def HSV_without_trackbar():
     lower_banana = np.array([20, 100, 160])
     upper_banana = np.array([30, 255, 255])
     mask_banana = cv2.inRange(hsv_jpg, lower_banana, upper_banana)
+
     lower_banana1 = np.array([19, 78, 87])
     upper_banana1 = np.array([45, 255, 255])
     mask_banana1 = cv2.inRange(hsv_jpg, lower_banana1, upper_banana1)
+
     mask_banana_full = mask_banana+mask_banana1
-    closing_banana= cv2.morphologyEx(mask_banana_full, cv2.MORPH_CLOSE, kernel)
+
+    closing_banana = cv2.morphologyEx(mask_banana_full, cv2.MORPH_CLOSE, kernel)
     banana_contours = cv2.findContours(closing_banana, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     banana_contours = banana_contours[0]
     for c in banana_contours:
         x,y,w,h = cv2.boundingRect(c)
         contour = cv2.contourArea(c)
-        if contour > 9000:
+        if contour > 10000:
             print('contour area of banana', contour)
             cv2.rectangle(resize_jpg, (x, y),(x + w, y + h), (0,0,255), 2) ##BGR
             banana += 1
 
-
     #Orange
     lower_orange = np.array([0, 206, 0]) # 10 200 200
     upper_orange = np.array([19, 255, 255]) # 25 255 255
+    mask_orange = cv2.inRange(hsv_jpg, lower_orange, upper_orange)
+
     lower_orange1 = np.array([9,102, 227])  # 10 200 200
     upper_orange1 = np.array([52, 252, 255])  # 25 255 255
-    mask_orange = cv2.inRange(hsv_jpg,lower_orange,upper_orange)
     mask_orange1 = cv2.inRange(hsv_jpg, lower_orange1, upper_orange1)
+
     mask_orange_full = mask_orange1+mask_orange
+
     closing_orange = cv2.morphologyEx(mask_orange_full, cv2.MORPH_CLOSE, kernel)
     orange_contours = cv2.findContours(closing_orange,cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     orange_contours = orange_contours[0]
@@ -60,15 +66,16 @@ def HSV_without_trackbar():
             orange += 1
 
 
-    lower2 = np.array([0, 36, 0]) #0 128 24    0 125 0
-    upper2 = np.array([14, 220, 255]) #10 255 255 31 255 148
+    lower = np.array([0, 36, 0]) #0 128 24    0 125 0
+    upper = np.array([14, 220, 255]) #10 255 255 31 255 148
+    upper_mask = cv2.inRange(hsv_jpg, lower, upper)
 
-    upper_mask = cv2.inRange(hsv_jpg, lower2, upper2)
     lower1 = np.array([52, 45, 0])  # 0 128 24    0 125 0
     upper1 = np.array([189, 255, 255])  # 10 255 255 31 255 148
-
     upper_mask1 = cv2.inRange(hsv_jpg, lower1, upper1)
+
     apple_mask = upper_mask+upper_mask1
+
     closing_apple = cv2.morphologyEx(apple_mask, cv2.MORPH_CLOSE, kernel)
     apple_contours = cv2.findContours(closing_apple,cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     apple_contours = apple_contours[0]
@@ -86,7 +93,7 @@ def HSV_without_trackbar():
     print('Number of apple: '+str(apple))
     while True:
         cv2.imshow('Result',resize_jpg)
-        cv2.imshow('Mask',closing_apple)
+        cv2.imshow('Mask',closing_banana)
         key_code = cv2.waitKey(1)
         if key_code == 27:
             exit()
