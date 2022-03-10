@@ -12,7 +12,7 @@ def HSV_without_trackbar():
     apple = 0
     banana = 0
 
-    path = "data/03.jpg"
+    path = "data/04.jpg"
     jpg = cv2.imread(path,1)
     resize_jpg = cv2.resize(jpg, dsize=None,fx=0.25,fy=0.25, interpolation=cv2.INTER_AREA)
     jpg = cv2.GaussianBlur(resize_jpg,(19,19),0)
@@ -41,6 +41,7 @@ def HSV_without_trackbar():
         if contour > 10000:
             print('contour area of banana', contour)
             cv2.rectangle(resize_jpg, (x, y),(x + w, y + h), (0,0,255), 2) ##BGR
+            cv2.putText(resize_jpg,"Banana",(x,y), cv2.FONT_HERSHEY_DUPLEX,fontScale=1,color=(0,0,255),thickness=None)
             banana += 1
 
     #Orange
@@ -63,6 +64,7 @@ def HSV_without_trackbar():
         if contour > 10000:
             print('contour area of orange', contour)
             cv2.rectangle(resize_jpg, (x, y),(x + w, y + h), (255,0,0), 2) ##BGR
+            cv2.putText(resize_jpg, "Orange", (x, y), cv2.FONT_HERSHEY_DUPLEX,fontScale=1,color=(255,0,0),thickness=None)
             orange += 1
 
 
@@ -85,6 +87,7 @@ def HSV_without_trackbar():
         if contour> 10000: #contours area function need to check
             print('contour area of apple', contour)
             cv2.rectangle(resize_jpg, (x, y),(x + w, y + h), (0,255,0), 2) ##BGR
+            cv2.putText(resize_jpg, "Apple", (x, y), cv2.FONT_HERSHEY_DUPLEX,fontScale=1,color=(0,255,0),thickness=None)
             apple += 1
 
 
